@@ -1,7 +1,6 @@
 const Discord = require('discord.js');
 const puppeteer = require("puppeteer");
 var fetch = require("node-fetch")
-var fs = require("fs")
 var bot = new Discord.Client();
 var token = 'YOUR_BOT_TOKEN';
 async function postData(url = '', data = {}) {
@@ -29,13 +28,13 @@ bot.on('ready', function (msg) {
     //bot.channels.cache.get("961310726402736128").send("1")
 
     setInterval(() => {
-        bot.channels.cache.get("961310726402736128").messages.fetch({ around: '961452357055578173', limit: 1 })
+        bot.channels.cache.get("CHANNEL_ID").messages.fetch({ around: 'MESSAGE_ID', limit: 1 })
             .then(msg => {
                 msg = msg.first()
                 async function run() {
                     const browser = await puppeteer.launch();
                     const page = await browser.newPage();
-                    await page.goto("https://mcsrvstat.us/server/172.65.219.10:36102");
+                    await page.goto("https://mcsrvstat.us/server/YOUR_IP_ADDRESS_OF_MC_SERVER");
                     const element = await page.$("#content");
                     let number = await page.evaluate(() => {
                         if(!document.querySelector('#content')){
@@ -51,7 +50,7 @@ bot.on('ready', function (msg) {
 
                     });
                     if (number.includes("Could not get the server status") && boomCount == 0) {
-                        bot.channels.cache.get("938067791678959658").send("鬼島已炸")
+                        bot.channels.cache.get("CHANNEL_ID").send("The server is down")
                         boomCount++
                     }
                     if (!number.includes("Could not get the server status") && boomCount != 0) {
@@ -61,12 +60,12 @@ bot.on('ready', function (msg) {
 
                     const attachment = new Discord
                         .MessageAttachment('./screenshot.png', '1.png');
-                    bot.channels.cache.get("961450262780846080").send(attachment).then(msg2 => {
-                        bot.channels.cache.get("961450262780846080").messages.fetch({ limit: 1 })
+                    bot.channels.cache.get("TEMP_CHANNEL_ID").send(attachment).then(msg2 => {
+                        bot.channels.cache.get("CHANNEL_ID").messages.fetch({ limit: 1 })
                             .then(msg1 => {
                                 url = msg1.first().attachments.first().url
 
-                                postData("https://api.mcsrvstat.us/2/172.65.219.10:36102", {
+                                postData("https://api.mcsrvstat.us/2/YOUR_IP_ADDRESS_OF_MC_SERVER", {
                                     "headers": {
                                         "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
                                         "accept-language": "zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7,zh-CN;q=0.6",
@@ -78,8 +77,7 @@ bot.on('ready', function (msg) {
                                         "sec-fetch-mode": "navigate",
                                         "sec-fetch-site": "none",
                                         "sec-fetch-user": "?1",
-                                        "upgrade-insecure-requests": "1",
-                                        "cookie": "_ga=GA1.2.1242259474.1649294758; _gid=GA1.2.1483268323.1649294758"
+                                        "upgrade-insecure-requests": "1"
                                     },
                                     "referrerPolicy": "strict-origin-when-cross-origin",
                                     "body": null,
@@ -93,13 +91,12 @@ bot.on('ready', function (msg) {
                                             var playerList=""
                                         }else{
                                             var playerList = "\n"+data.players.list.join(", ")
-                                            if (playerList.includes("TheTouchOfGod")) {
-                                                playerList += "\n" + ":red_circle::red_circle::red_circle::red_circle::red_circle:傻閪在線:red_circle::red_circle::red_circle::red_circle::red_circle:"
+                                            if (playerList.includes("SOME_MINECRAFT_ID")) {
+                                                playerList += "\n" + ":red_circle::red_circle::red_circle::red_circle::red_circle:Someone is online:red_circle::red_circle::red_circle::red_circle::red_circle:"
                                             }
                                         }
                                             msg.edit(new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds()   + playerList + "\n" + url)
                                             //msg.edit("2")
-                                            //fs.writeFileSync("./html.html", JSON.stringify(data.motd.html))
                                         
                                     })
 
@@ -107,14 +104,6 @@ bot.on('ready', function (msg) {
                             })
                         setTimeout(() => msg2.delete(), 1000)
                     })
-
-                    /*const embed = new Discord.MessageEmbed()
-                        .setTitle(new Date().getHours()+":"+new Date().getMinutes()+":"+new Date().getSeconds())
-                        .attachFiles(attachment)
-                        .setImage('attachment://1.png');
-    
-                   // bot.channels.cache.get("961310726402736128").send({embed})
-                    msg.edit({embed})*/
                     browser.close();
                 }
                 run()
