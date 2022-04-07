@@ -25,7 +25,7 @@ async function postData(url = '', data = {}) {
 var boomCount = 0
 bot.on('ready', function (msg) {
     console.log(1)
-    //bot.channels.cache.get("961310726402736128").send("1")
+    //bot.channels.cache.get("CHANNEL_ID").send("1")
 
     setInterval(() => {
         bot.channels.cache.get("CHANNEL_ID").messages.fetch({ around: 'MESSAGE_ID', limit: 1 })
