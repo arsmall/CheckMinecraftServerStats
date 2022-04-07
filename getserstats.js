@@ -91,9 +91,7 @@ bot.on('ready', function (msg) {
                                             var playerList=""
                                         }else{
                                             var playerList = "\n"+data.players.list.join(", ")
-                                            if (playerList.includes("SOME_MINECRAFT_ID")) {
-                                                playerList += "\n" + ":red_circle::red_circle::red_circle::red_circle::red_circle:Someone is online:red_circle::red_circle::red_circle::red_circle::red_circle:"
-                                            }
+                                            
                                         }
                                             msg.edit(new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds()   + playerList + "\n" + url)
                                             //msg.edit("2")
